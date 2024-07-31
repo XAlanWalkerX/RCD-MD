@@ -1,11 +1,9 @@
-[![Node.js CI](https://github.com/XAlanWalkerX/RCD-MD/actions/workflows/node.js.yml/badge.svg)](https://github.com/XAlanWalkerX/RCD-MD/actions/workflows/node.js.yml)
-
 ## <p align="center">❮ ALL ERRORS FIXED 𝗥𝗖𝗗-MD WHATSAPP BOT BY NICO ❯
 <br>
  
 <p align="center">
   <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.demolab.com?font=EB+Garamond&weight=800&size=28&duration=4000&pause=1000&color=FF0000&random=false&width=435&lines=WELCOME+TO+THE+𝗥𝗖𝗗-MD;MULTI-DEVICE+WHATSAPP+BOT;DEVELOPED+BY+RCD+TEAM;ERRORS+FIXED+BY+NICO;RELEASED+DATE+28%2F07%2F2024." alt="Typing SVG" />
+    <img src="https://readme-typing-svg.demolab.com?font=EB+Garamond&weight=800&size=28&duration=4000&pause=1000&color=FF0000&random=false&width=435&lines=WELCOME+TO+THE+𝗥𝗖𝗗-MD;MULTI-DEVICE+WHATSAPP+BOT;DEVELOPED+BY+RCD+TEAM;ERRORS+FIXED+BY+NICO" alt="Typing SVG" />
   </a>
 </p>
 
