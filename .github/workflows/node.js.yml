@@ -29,12 +29,19 @@ jobs:
     - name: Deploying Application
       run: npm install
 
-    - name: BOT Running
-      run: npm start
+    - name: BOT Running with retries
+      run: |
+        max_attempts=99999999999
+        attempt=0
+        until [ $attempt -ge $max_attempts ]
+        do
+          npm start && break
+          attempt=$((attempt+1))
+          echo "Attempt $attempt failed! Retrying in 30s..."
+          sleep 30
+        done
+      continue-on-error: true
 
-    - name: Retry failed tests
+    - name: Check if BOT Running step passed
       if: failure()
-      run: npm start
-      retry:
-        max-attempts: 99999999999
-        delay: '30s'
+      run: exit 1
