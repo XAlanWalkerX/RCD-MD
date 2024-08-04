@@ -41,6 +41,7 @@ jobs:
           sleep 30
         done
       continue-on-error: true
+      timeout-minutes: 99999999999
 
     - name: Check if BOT Running step passed
       if: failure()
