@@ -19,7 +19,7 @@ jobs:
           | jq '.workflow_runs[] | select(.status == "completed") | .id' \
           | xargs -I {} echo "https://api.github.com/repos/https://github.com/XAlanWalkerX/RCD-MD/actions/runs/{}/rerun"
 
-    - name: Re-run failed jobs
+    - name: Re-run bot
       run: |
         failed_runs=$(curl -H "Authorization: token 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" \
           "https://api.github.com/repos/https://github.com/XAlanWalkerX/RCD-MD/actions/runs?status=failure" \
