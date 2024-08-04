@@ -2,7 +2,7 @@ name: Scheduled Job Re-run
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs every hour
+    - cron: '*/10 * * * *'  # Runs every 10 minutes
 
 jobs:
   re-run-failed-jobs:
