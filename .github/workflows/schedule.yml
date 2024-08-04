@@ -14,19 +14,19 @@ jobs:
     - name: Get failed runs
       id: get-failed
       run: |
-        curl -H "Authorization: token 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" \
+        curl -H "Authorization: token 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" \
           "https://api.github.com/repos/https://github.com/XAlanWalkerX/RCD-MD/actions/runs?status=failure" \
           | jq '.workflow_runs[] | select(.status == "completed") | .id' \
           | xargs -I {} echo "https://api.github.com/repos/https://github.com/XAlanWalkerX/RCD-MD/actions/runs/{}/rerun"
 
     - name: Re-run bot
       run: |
-        failed_runs=$(curl -H "Authorization: token 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" \
+        failed_runs=$(curl -H "Authorization: token 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" \
           "https://api.github.com/repos/https://github.com/XAlanWalkerX/RCD-MD/actions/runs?status=failure" \
           | jq -r '.workflow_runs[] | select(.status == "completed") | .id')
 
         for run_id in $failed_runs; do
-          curl -X POST -H "Authorization: token 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" \
+          curl -X POST -H "Authorization: token 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" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/https://github.com/XAlanWalkerX/RCD-MD/actions/runs/$run_id/rerun"
         done
