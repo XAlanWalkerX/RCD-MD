@@ -2,7 +2,7 @@ name: Scheduled Job Re-run
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Runs every 10 minutes
+    - cron: '*/5 * * * *'  # Runs every 5 minutes
 
 jobs:
   re-run-failed-jobs:
@@ -18,7 +18,7 @@ jobs:
         REPO=${{ github.repository }}
         echo "::set-output name=repo::$REPO"
 
-    - name: Check for Re-run
+    - name: Get failed runs
       id: get-failed
       run: |
         REPO=${{ steps.get-repo.outputs.repo }}
@@ -29,7 +29,7 @@ jobs:
         echo "Failed runs: $failed_runs"
         echo "::set-output name=failed_runs::$failed_runs"
 
-    - name: Re-run Bot
+    - name: Re-run failed jobs
       run: |
         failed_runs="${{ steps.get-failed.outputs.failed_runs }}"
 
