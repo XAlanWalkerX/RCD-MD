@@ -19,7 +19,7 @@ jobs:
         REPO=${{ github.repository }}
         echo "::set-output name=repo::$REPO"
 
-    - name: Check for Re-runs
+    - name: Check for Re-run
       id: get-failed
       run: |
         REPO=${{ steps.get-repo.outputs.repo }}
@@ -43,3 +43,4 @@ jobs:
               -H "Accept: application/vnd.github.v3+json" \
               "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run_id/rerun"
           done
+            fi
