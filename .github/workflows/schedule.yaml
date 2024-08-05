@@ -1,4 +1,4 @@
-name: Scheduled Job Re-run
+name: Scheduled Bot Re-run
 
 on:
   schedule:
@@ -12,13 +12,13 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v3
 
-    - name: Get repository details
+    - name: Get Bot details
       id: get-repo
       run: |
         REPO=${{ github.repository }}
         echo "::set-output name=repo::$REPO"
 
-    - name: Get failed runs
+    - name: Check for Re-runs
       id: get-failed
       run: |
         REPO=${{ steps.get-repo.outputs.repo }}
@@ -29,7 +29,7 @@ jobs:
         echo "Failed runs: $failed_runs"
         echo "::set-output name=failed_runs::$failed_runs"
 
-    - name: Re-run failed jobs
+    - name: Re-run Bot
       run: |
         failed_runs="${{ steps.get-failed.outputs.failed_runs }}"
 
