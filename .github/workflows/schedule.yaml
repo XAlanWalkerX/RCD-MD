@@ -1,6 +1,7 @@
 name: Scheduled Bot Re-run
 
 on:
+  workflow_dispatch:  # Allows manual triggering of the workflow
   schedule:
     - cron: '*/5 * * * *'  # Runs every 5 minutes
 
