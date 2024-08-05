@@ -1,0 +1,13 @@
+name: Test Scheduled Workflow
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  test-job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Print Current Date
+      run: date
