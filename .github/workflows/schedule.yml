@@ -7,6 +7,7 @@ on:
 jobs:
   re-run-failed-jobs:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v3
@@ -14,19 +15,24 @@ jobs:
     - name: Get failed runs
       id: get-failed
       run: |
-        curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          "https://api.github.com/repos/https://github.com/XAlanWalkerX/RCD-MD/actions/runs?status=failure" \
-          | jq '.workflow_runs[] | select(.status == "completed") | .id' \
-          | xargs -I {} echo "https://api.github.com/repos/XAlanWalkerX/RCD-MD/actions/runs/{}/rerun"
+        failed_runs=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/XAlanWalkerX/RCD-MD/actions/runs?status=completed&conclusion=failure" \
+          | jq -r '.workflow_runs[] | .id')
+        
+        echo "Failed runs: $failed_runs"
+        echo "::set-output name=failed_runs::$failed_runs"
 
     - name: Re-run bot
       run: |
-        failed_runs=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          "https://api.github.com/repos/XAlanWalkerX/RCD-MD/actions/runs?status=failure" \
-          | jq -r '.workflow_runs[] | select(.status == "completed") | .id')
+        failed_runs="${{ steps.get-failed.outputs.failed_runs }}"
 
-        for run_id in $failed_runs; do
-          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/XAlanWalkerX/RCD-MD/actions/runs/$run_id/rerun"
-        done
+        if [ -z "$failed_runs" ]; then
+          echo "No failed runs to re-run."
+        else
+          for run_id in $failed_runs; do
+            echo "Re-running workflow run ID: $run_id"
+            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/XAlanWalkerX/RCD-MD/actions/runs/$run_id/rerun"
+          done
+        
