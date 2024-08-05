@@ -13,6 +13,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Get repository details
+      id: get-repo
       run: |
         REPO=${{ github.repository }}
         echo "::set-output name=repo::$REPO"
@@ -24,11 +25,11 @@ jobs:
         failed_runs=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           "https://api.github.com/repos/$REPO/actions/runs?status=completed&conclusion=failure" \
           | jq -r '.workflow_runs[] | .id')
-        
+
         echo "Failed runs: $failed_runs"
         echo "::set-output name=failed_runs::$failed_runs"
 
-    - name: Re-run bot
+    - name: Re-run failed jobs
       run: |
         failed_runs="${{ steps.get-failed.outputs.failed_runs }}"
 
@@ -41,3 +42,4 @@ jobs:
               -H "Accept: application/vnd.github.v3+json" \
               "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run_id/rerun"
           done
+        
