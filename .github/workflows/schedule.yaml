@@ -37,10 +37,10 @@ jobs:
         if [ -z "$failed_runs" ]; then
           echo "No failed runs to re-run."
         else
-          for run_id in $failed_runs; do
-            echo "Re-running workflow run ID: $run_id"
+          for 10258788076 in $failed_runs; do
+            echo "Re-running workflow run ID: 10258788076"
             curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run_id/rerun"
+              "https://api.github.com/repos/${{ github.repository }}/actions/runs/10258788076/rerun"
           done
         fi
