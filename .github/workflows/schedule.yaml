@@ -13,36 +13,34 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v3
 
-    - name: Get for Re-run
+    - name: Get Bot details
+      id: get-repo
+      run: |
+        REPO=${{ github.repository }}
+        echo "::set-output name=repo::$REPO"
+
+    - name: Check for Re-run
       id: get-failed
       run: |
-        workflow_id=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          "https://api.github.com/repos/${{ github.repository }}/actions/workflows" \
-          | jq -r '.workflows[] | select(.name == "node.js") | .id')
-
-        if [ -z "$workflow_id" ]; then
-          echo "No workflow found for node.js.yml."
-          exit 1
-        fi
-
+        REPO=${{ steps.get-repo.outputs.repo }}
         failed_runs=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          "https://api.github.com/repos/${{ github.repository }}/actions/workflows/$workflow_id/runs?status=completed&conclusion=failure" \
+          "https://api.github.com/repos/$REPO/actions/runs?status=completed&conclusion=failure" \
           | jq -r '.workflow_runs[] | .id')
 
         echo "Failed runs: $failed_runs"
-        echo "failed_runs=$failed_runs" >> $GITHUB_ENV
+        echo "::set-output name=failed_runs::$failed_runs"
 
     - name: Re-run Bot
       run: |
-        failed_runs="${{ env.failed_runs }}"
+        failed_runs="${{ steps.get-failed.outputs.failed_runs }}"
 
         if [ -z "$failed_runs" ]; then
           echo "No failed runs to re-run."
         else
           for run_id in $failed_runs; do
-            echo "Re-running workflow run ID: $run_id"
+            echo "Re-running workflow run ID: 10258788076"
             curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run_id/rerun"
+              "https://api.github.com/repos/${{ github.repository }}/actions/runs/10258788076/rerun"
           done
         fi
